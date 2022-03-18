@@ -29,6 +29,7 @@ func main() {
 	getlubu()
 	c.Start()
 	wg.Wait()
+	saveLog("已结束运行")
 }
 
 func getlubu() {

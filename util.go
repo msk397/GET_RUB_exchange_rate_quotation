@@ -67,7 +67,8 @@ func saveLog(mess string) {
 	}(file)
 	//写入文件时，使用带缓存的 *Writer
 	write := bufio.NewWriter(file)
-	write.WriteString(mess)
+	timeStr := time.Now().Format("2006-01-02 15:04:05")
+	write.WriteString(timeStr + " " + mess)
 	//Flush将缓存的文件真正写入到文件中
 	write.Flush()
 }
