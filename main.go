@@ -12,16 +12,19 @@ import (
 	"time"
 )
 
-var barkKey string
+var (
+	barkKey   string
+	lastPrice string
+)
 
 func main() {
-	barkKey = "test"
+	barkKey = "ByCcpxeDB9yuBfsHaYq8cQ"
 	var wg sync.WaitGroup
 	wg.Add(1)
 	nyc, _ := time.LoadLocation("Asia/Shanghai")
 	saveLog(barkPush("测试发送", barkKey, "测试"))
 	c := cron.New(cron.WithLocation(nyc))
-	_, err := c.AddFunc("0 7-23 * * MON-FRI", getlubu)
+	_, err := c.AddFunc("0/5 7-22 * * MON-FRI", getlubu)
 	if err != nil {
 		saveLog(err.Error())
 		return
@@ -33,6 +36,7 @@ func main() {
 }
 
 func getlubu() {
+	saveLog("开始获取牌价\n")
 	// Request the HTML page.
 	res, err := http.Get("https://www.boc.cn/sourcedb/whpj/")
 	if err != nil {
@@ -58,6 +62,7 @@ func getlubu() {
 	salegps := ") > td:nth-child(2)"
 	buygps := ") > td:nth-child(4)"
 	timegps := ") > td:nth-child(8)"
+
 	for i := 2; i < 30; i++ {
 		name := gong + strconv.Itoa(i) + namegps
 		nameText := doc.Find(name).Text()
@@ -74,8 +79,12 @@ func getlubu() {
 			saleText := doc.Find(saleDom).Text()
 			buyText := doc.Find(buyDom).Text()
 			timeText := doc.Find(timeDom).Text()
-			body := saleNameText + ": " + saleText + "\n" + buyNameText + ": " + buyText + "\n" + timeNameText + ": " + timeText
-			saveLog(barkPush(body, barkKey, nameText))
+			PriceBody := saleNameText + ": " + saleText + "\n" + buyNameText + ": " + buyText + "\n"
+			body := PriceBody + timeNameText + ": " + timeText
+			if lastPrice != PriceBody {
+				saveLog(barkPush(body, barkKey, nameText))
+				lastPrice = PriceBody
+			}
 			break
 		}
 		if i == 29 {
@@ -85,4 +94,10 @@ func getlubu() {
 
 		}
 	}
+	saveLog("结束获取牌价\n")
+}
+
+//计算两个时间相差多少秒
+func timeDiff(start, end time.Time) int {
+	return int(end.Sub(start).Seconds())
 }

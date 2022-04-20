@@ -19,9 +19,9 @@ func barkPush(body, key, title string) string {
 	mapdata["device_key"] = key
 	mapdata["title"] = title
 	b, _ := json.Marshal(mapdata)
-	// 超时时间：20秒
-	client := &http.Client{Timeout: 20 * time.Second}
-	pushurl := "https://api.day.app/push"
+	// 超时时间：60秒
+	client := &http.Client{Timeout: 60 * time.Second}
+	pushurl := "https://barkapi.machangxin.top/push"
 	header := "application/json; charset=utf-8"
 	resp, err := client.Post(pushurl, header, bytes.NewBuffer(b))
 	if err != nil {
@@ -68,7 +68,13 @@ func saveLog(mess string) {
 	//写入文件时，使用带缓存的 *Writer
 	write := bufio.NewWriter(file)
 	timeStr := time.Now().Format("2006-01-02 15:04:05")
-	write.WriteString(timeStr + " " + mess)
+	_, err = write.WriteString(timeStr + " " + mess)
+	if err != nil {
+		return
+	}
 	//Flush将缓存的文件真正写入到文件中
-	write.Flush()
+	err = write.Flush()
+	if err != nil {
+		return
+	}
 }
