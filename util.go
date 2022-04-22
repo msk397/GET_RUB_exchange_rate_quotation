@@ -21,7 +21,7 @@ func barkPush(body, key, title string) string {
 	b, _ := json.Marshal(mapdata)
 	// 超时时间：60秒
 	client := &http.Client{Timeout: 60 * time.Second}
-	pushurl := "https://barkapi.machangxin.top/push"
+	pushurl := "https://barkapi.test.top/push"
 	header := "application/json; charset=utf-8"
 	resp, err := client.Post(pushurl, header, bytes.NewBuffer(b))
 	if err != nil {

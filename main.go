@@ -18,7 +18,7 @@ var (
 )
 
 func main() {
-	barkKey = "ByCcpxeDB9yuBfsHaYq8cQ"
+	barkKey = "test"
 	var wg sync.WaitGroup
 	wg.Add(1)
 	nyc, _ := time.LoadLocation("Asia/Shanghai")
