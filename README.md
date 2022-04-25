@@ -1,13 +1,13 @@
-# 获取中国银行卢布牌价
+# Get the ruble price of Bank of China
 
-* 五分钟获取一次中国银行的卢布现汇牌价
-* 通过bark推送，只有价格变动时才推送
-* 将bark日志保存在log中
-* 使用cron进行定时任务
-* 支持更改时区
+* Get the ruble spot exchange rate from Bank of China every five minutes
+* Push through [bark](https://github.com/Finb/Bark), only push when the price changes
+* Save the bark log in the log
+* Use cron for scheduled tasks
+* Support changing time zone
 
-## 原理
+## Principle
 
-* 通过http库获取中国银行的外汇网站的HTML代码
-* 通过[goquery](https://github.com/PuerkitoBio/goquery)解析HTML代码，获取卢布现汇牌价
-* 定时任务通过[cron](https://github.com/robfig/cron/)实现
+* Get the HTML code of Bank of China's foreign exchange website through http library
+* Parse the HTML code through [goquery](https://github.com/PuerkitoBio/goquery) to get the spot exchange rate of rubles
+* Timing tasks are implemented through [cron](https://github.com/robfig/cron/)
