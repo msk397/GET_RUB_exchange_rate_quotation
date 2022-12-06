@@ -1,0 +1,9 @@
+version = 1
+
+[[analyzers]]
+name = "go"
+enabled = true
+
+  [analyzers.meta]
+  import_root = "github.com/msk397/GET_RUB_exchange_rate_quotation"
+  dependencies_vendored = true
